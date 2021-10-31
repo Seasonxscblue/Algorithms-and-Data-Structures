@@ -3,46 +3,44 @@ package main
 import (
 	"errors"
 	"fmt"
-	"math/rand"
 	"os"
-	"strconv"
+	"math/rand"
 	"time"
 )
 
 // 结点结构体
-type node struct {
-	data int
-	next *node
+type node[T comparable] struct {
+	data T
+	next *node[T]
 }
 
-func newNode(data int, next *node) *node {
-	n := new(node)
-	n.data = data
-	n.next = next
+func newNode[T comparable](data T, next *node[T]) *node[T] {
+	n := new(node[T])
+	n.data, n.next = data, next
 	return n
 }
 
 // 链表结构体
-type List struct {
-	head *node
+type list[T comparable] struct {
+	head *node[T]
 	size int
 }
 
-func (l *List) Clear() {
+func (l *list[T]) Clear() {
 	l.size = 0
 	l.head = nil
 }
 
-func (l *List) Get(indx int) int {
+func (l *list[T]) Get(indx int) T {
 	return l.node(indx).data
 }
 
-func (l *List) Set(indx int, data int) {
+func (l *list[T]) Set(indx int, data T) {
 	node := l.node(indx)
 	node.data = data
 }
 
-func (l *List) Insert(indx, v int) {
+func (l *list[T]) Insert(indx int, v T) {
 	l.rangeCheckForAdd(indx)
 
 	if indx == 0 {
@@ -54,11 +52,11 @@ func (l *List) Insert(indx, v int) {
 	l.size++
 }
 
-func (l *List) Append(data int) {
+func (l *list[T]) Append(data T) {
 	l.Insert(l.size, data)
 }
 
-func (l *List) Remove(indx int) {
+func (l *list[T]) Remove(indx int) {
 	if indx == 0 {
 		l.head = l.head.next
 	} else {
@@ -69,11 +67,11 @@ func (l *List) Remove(indx int) {
 	l.size--
 }
 
-func (l *List) Contains(data int) bool {
+func (l *list[T]) Contains(data T) bool {
 	return l.IndexOf(data) != -1
 }
 
-func (l *List) IndexOf(data int) int {
+func (l *list[T]) IndexOf(data T) int {
 	node := l.head
 	for i := 0; i < l.size; i++ {
 		if data == node.data {
@@ -85,15 +83,15 @@ func (l *List) IndexOf(data int) int {
 	return -1
 }
 
-func (l *List) Len() int {
+func (l *list[T]) Len() int {
 	return l.size
 }
 
-func (l *List) IsEmpty() bool {
+func (l *list[T]) IsEmpty() bool {
 	return l.size == 0
 }
 
-func (l *List) node(indx int) *node {
+func (l *list[T]) node(indx int) *node[T] {
 	err := l.rangeCheck(indx)
 	if err != nil {
 		fmt.Println(err)
@@ -107,28 +105,28 @@ func (l *List) node(indx int) *node {
 	return n
 }
 
-func (l *List) rangeCheck(indx int) error {
+func (l *list[T]) rangeCheck(indx int) error {
 	if indx < 0 || indx >= l.size {
 		return errors.New("list subscript out of range")
 	}
 	return nil
 }
 
-func (l *List) rangeCheckForAdd(indx int) error {
+func (l *list[T]) rangeCheckForAdd(indx int) error {
 	if indx < 0 || indx > l.size {
 		return errors.New("list subscript out of range")
 	}
 	return nil
 }
 
-func (l *List) String() string {
+func (l *list[T]) String() string {
 	str := ""
 	n := l.head
 	for i := 0; i < l.size; i++ {
 		if i != 0 {
 			str += "->"
 		}
-		str += strconv.Itoa(n.data)
+		str += fmt.Sprint(n.data)
 		n = n.next
 	}
 
@@ -138,7 +136,7 @@ func (l *List) String() string {
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	var l List
+	l := list[int]{}
 	l.Append(2)
 	l.Append(3)
 	l.Append(5)
@@ -149,11 +147,14 @@ func main() {
 	l.Append(26)
 	l.Append(32)
 
+	fmt.Println(l.String())
 	// Get
+	fmt.Println("==========Get==========")
 	r := rand.Intn(l.Len())
 	fmt.Printf("l.Get(%d) = %d\n", r, l.Get(r))
 
 	// Set
+	fmt.Println("==========Set==========")
 	r1, r2 := rand.Intn(l.Len()), rand.Intn(100)+1
 	fmt.Printf("l.Set(%d, %d): \n", r1, r2)
 	l.Set(r1, r2)
@@ -161,6 +162,7 @@ func main() {
 
 	// Insert
 	// 头插
+	fmt.Println("==========Insert==========")
 	r = rand.Intn(100) + 1
 	fmt.Printf("l.Insert(0, %d)\n", r)
 	l.Insert(0, r)
@@ -179,26 +181,32 @@ func main() {
 	fmt.Println(l.String())
 
 	// Remove
+	fmt.Println("==========Remove==========")
 	r = rand.Intn(l.Len())
 	fmt.Printf("l.Remove(%d)\n", r)
 	l.Remove(r)
 	fmt.Println(l.String())
 
 	// Contains
+	fmt.Println("==========Contains==========")
 	r = rand.Intn(rand.Intn(100))
 	fmt.Printf("l.Contains(%d) = %v\n", r, l.Contains(r))
 
 	// Indexof
+	fmt.Println("==========Indexof==========")
 	r = rand.Intn(l.Len())
 	fmt.Printf("l.IndexOf(%d) = %d\n", l.Get(r), l.IndexOf(l.Get(r)))
 
 	// Len
+	fmt.Println("==========Len==========")
 	fmt.Printf("l.Len() = %d\n", l.Len())
 
 	// Clear
+	fmt.Println("==========Clear==========")
 	l.Clear()
 	fmt.Printf("L.Clear()\n")
 
 	// IsEmpty()
+	fmt.Println("==========IsEmpty==========")
 	fmt.Printf("l.IsEmpty() = %v\n", l.IsEmpty())
 }

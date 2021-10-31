@@ -2,42 +2,46 @@ package main
 
 import "fmt"
 
-type Queue struct {
-	queue []int
+type queue[T any] []T
+
+func (q *queue[T]) IsEmpty() bool {
+	return len(*q) == 0
 }
 
-func (q *Queue) isEmpty() bool {
-	return len(q.queue) == 0
+func (q *queue[T]) Offer(element T) {
+	*q = append(*q, element)
 }
 
-func (q *Queue) offer(element int) {
-	q.queue = append(q.queue, element)
-}
-
-func (q *Queue) poll() int {
-	head := q.queue[0]
-	q.queue = q.queue[1:]
+func (q *queue[T]) Poll() T {
+	head := (*q)[0]
+	*q = (*q)[1:]
 	return head
 }
 
-func (q *Queue) front() int {
-	return q.queue[0]
+func (q *queue[T]) Front() T {
+	return (*q)[0]
 }
 
-func (q *Queue) size() int {
-	return len(q.queue)
+func (q *queue[T]) Size() int {
+	return len(*q)
 }
 
 func main() {
-	q := Queue{queue: []int{6, 3, 1, 7, 5, 8, 9, 2, 4}}
+	fmt.Println(hotPotato([]string{"Bill", "David", "Susan", "Jane", "Kent", "Brad"}, 7))
+}
 
-	for {
-		fmt.Printf("%d", q.poll())
-		q.offer(q.poll())
-
-		if q.size() == 1 {
-			fmt.Printf("%d", q.poll())
-			break
-		}
+func hotPotato(namelist []string, num int) string {
+	simQueue := queue[string]{}
+	for _, name := range namelist {
+		simQueue.Offer(name)
 	}
+
+	for simQueue.Size() > 1 {
+		for i := 0; i < 7; i++ {
+			simQueue.Offer(simQueue.Poll())
+		}
+		simQueue.Poll()
+	}
+
+	return simQueue.Poll()
 }
