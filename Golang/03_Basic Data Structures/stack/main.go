@@ -5,31 +5,9 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"cn.edu.xtu/Stack"
 )
-
-type stack[T any] []T
-
-func (s *stack[T]) Size() int {
-	return len(*s)
-}
-
-func (s *stack[T]) IsEmpty() bool {
-	return len(*s) == 0
-}
-
-func (s *stack[T]) Peek() T {
-	return (*s)[len(*s)-1]
-}
-
-func (s *stack[T]) Push(element T) {
-	*s = append(*s, element)
-}
-
-func (s *stack[T]) Pop() T {
-	top := (*s).Peek()
-	*s = (*s)[:len(*s)-1]
-	return top
-}
 
 func main() {
 	fmt.Println(parChecker("{()[]{}[]"))
@@ -44,7 +22,7 @@ func parChecker(symbolString string) bool {
 	m['['] = ']'
 	m['{'] = '}'
 
-	s := stack[byte]{}
+	s := Stack.Stack[byte]{}
 	bytes := []byte(symbolString)
 
 	for _, c := range bytes {
@@ -67,7 +45,7 @@ func parChecker(symbolString string) bool {
 func baseConverter(decNumber, base int) string {
 	digits := "0123456789ABCDEF"
 
-	remStack := stack[int]{}
+	remStack := Stack.Stack[int]{}
 
 	for decNumber > 0 {
 		rem := decNumber % base
@@ -94,7 +72,7 @@ func infix2Postfix(infixExpr string) string {
 	}
 
 	postfixList := []string{}
-	opStack := stack[string]{}
+	opStack := Stack.Stack[string]{}
 
 	infixExprArray := strings.Split(strings.Trim(infixExpr, " "), " ")
 	for _, token := range infixExprArray {
@@ -127,7 +105,7 @@ func infix2Postfix(infixExpr string) string {
 }
 
 func postfixEval(postfixExpr string) int {
-	operandStack := stack[int]{}
+	operandStack := Stack.Stack[int]{}
 
 	postfixExprArray := strings.Split(postfixExpr, " ")
 	for _, token := range postfixExprArray {

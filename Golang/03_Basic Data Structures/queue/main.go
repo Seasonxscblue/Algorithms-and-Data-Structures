@@ -1,37 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
 
-type queue[T any] []T
-
-func (q *queue[T]) IsEmpty() bool {
-	return len(*q) == 0
-}
-
-func (q *queue[T]) Offer(element T) {
-	*q = append(*q, element)
-}
-
-func (q *queue[T]) Poll() T {
-	head := (*q)[0]
-	*q = (*q)[1:]
-	return head
-}
-
-func (q *queue[T]) Front() T {
-	return (*q)[0]
-}
-
-func (q *queue[T]) Size() int {
-	return len(*q)
-}
+	"cn.edu.xtu/Queue"
+)
 
 func main() {
 	fmt.Println(hotPotato([]string{"Bill", "David", "Susan", "Jane", "Kent", "Brad"}, 7))
 }
 
 func hotPotato(namelist []string, num int) string {
-	simQueue := queue[string]{}
+	simQueue := Queue.Queue[string]{}
 	for _, name := range namelist {
 		simQueue.Offer(name)
 	}
