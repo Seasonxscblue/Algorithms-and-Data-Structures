@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"cn.edu.xtu/Stack"
+	"cn.edu.xtu/stack"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func parChecker(symbolString string) bool {
 	m['['] = ']'
 	m['{'] = '}'
 
-	s := Stack.Stack[byte]{}
+	s := stack.Stack[byte]{}
 	bytes := []byte(symbolString)
 
 	for _, c := range bytes {
@@ -45,7 +45,7 @@ func parChecker(symbolString string) bool {
 func baseConverter(decNumber, base int) string {
 	digits := "0123456789ABCDEF"
 
-	remStack := Stack.Stack[int]{}
+	remStack := stack.Stack[int]{}
 
 	for decNumber > 0 {
 		rem := decNumber % base
@@ -72,7 +72,7 @@ func infix2Postfix(infixExpr string) string {
 	}
 
 	postfixList := []string{}
-	opStack := Stack.Stack[string]{}
+	opStack := stack.Stack[string]{}
 
 	infixExprArray := strings.Split(strings.Trim(infixExpr, " "), " ")
 	for _, token := range infixExprArray {
@@ -105,7 +105,7 @@ func infix2Postfix(infixExpr string) string {
 }
 
 func postfixEval(postfixExpr string) int {
-	operandStack := Stack.Stack[int]{}
+	operandStack := stack.Stack[int]{}
 
 	postfixExprArray := strings.Split(postfixExpr, " ")
 	for _, token := range postfixExprArray {

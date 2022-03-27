@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+
+	"cn.edu.xtu/unorderedList"
 )
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	l := UnorderedList[int]{}
+	l := unorderedList.UnorderedList[int]{}
 	l.Append(2)
 	l.Append(3)
 	l.Append(5)

@@ -1,4 +1,4 @@
-package Stack
+package stack
 
 type Stack[T any] []T
 

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"cn.edu.xtu/Queue"
+	"cn.edu.xtu/queue"
 )
 
 func main() {
@@ -11,7 +11,7 @@ func main() {
 }
 
 func hotPotato(namelist []string, num int) string {
-	simQueue := Queue.Queue[string]{}
+	simQueue := queue.Queue[string]{}
 	for _, name := range namelist {
 		simQueue.Offer(name)
 	}

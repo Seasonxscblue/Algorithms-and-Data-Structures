@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"cn.edu.xtu/Deque"
+	"cn.edu.xtu/deque"
 )
 
 func main() {
@@ -11,7 +11,7 @@ func main() {
 }
 
 func palchecker(aString string) bool {
-	charDeque := Deque.Deque[rune]{}
+	charDeque := deque.Deque[rune]{}
 
 	for _, ch := range aString {
 		charDeque.AddRear(ch)
